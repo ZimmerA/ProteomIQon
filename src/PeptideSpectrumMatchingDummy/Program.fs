@@ -5,16 +5,15 @@ open CLIArgumentParsing
 open Argu
 open System.IO
 module console1 =
-    let timeNow = System.DateTime.Now.ToLongTimeString()
     let processFile (inFilePath:string, outFilePath:string) =
         let inText = File.ReadAllText(inFilePath)
-        let startTime = timeNow
-
+        let startTime = System.DateTime.Now.ToLongTimeString()
         // Simulate long running task
         System.Threading.Thread.Sleep(3000)
-        let outText =  inText + "\nspectrumMatching: " + startTime + "-" + timeNow
+        let endTime = System.DateTime.Now.ToLongTimeString()
+        let outText =  inText + "\nspectrumMatching: " + startTime + "-" + endTime
 
-        let fileInfo = new System.IO.FileInfo(outFilePath + Path.GetFileNameWithoutExtension(inFilePath)+ ".ptsm");
+        let fileInfo = new System.IO.FileInfo(outFilePath + Path.GetFileNameWithoutExtension(inFilePath)+ ".txt");
         fileInfo.Directory.Create();
         File.WriteAllText(fileInfo.FullName, outText)
 
@@ -24,7 +23,7 @@ module console1 =
 
         let parser = ArgumentParser.Create<CLIArguments>(programName =  (System.Reflection.Assembly.GetExecutingAssembly().GetName().Name)) 
         let results = parser.Parse argv
-        let inputFilePath = results.GetResult Input1
-        let outputFilePath = results.GetResult OutDir1
+        let inputFilePath = results.GetResult InstrumentOutput
+        let outputFilePath = results.GetResult OutputDirectory
         processFile(inputFilePath, outputFilePath)
         0

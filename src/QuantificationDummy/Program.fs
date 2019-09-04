@@ -6,23 +6,26 @@ open Argu
 open System.IO
 
 module console1 =
-let timeNow = System.DateTime.Now.ToLongTimeString()
-let processFile (inFilePath:string, outFilePath:string) =
-    let inText = File.ReadAllText(inFilePath)
-    let startTime = timeNow
-    // Simulate long running task
-    System.Threading.Thread.Sleep(3000)
-    let outText =  inText + "\n Quantification: " + startTime + "-" + timeNow
-    File.WriteAllText(outFilePath, outText)
+    let processFile (inFilePath:string, outFilePath:string) =
+        let inText = File.ReadAllText(inFilePath)
+        let startTime = System.DateTime.Now.ToLongTimeString()
+        // Simulate long running task
+        System.Threading.Thread.Sleep(3000)
+        let endTime = System.DateTime.Now.ToLongTimeString()
+        let outText =  inText + "\nquantification: " + startTime + "-" + endTime
 
-[<EntryPoint>]
-let main argv = 
-    printfn "%A" argv
+        let fileInfo = new System.IO.FileInfo(outFilePath + Path.GetFileNameWithoutExtension(inFilePath)+ ".txt");
+        fileInfo.Directory.Create();
+        File.WriteAllText(fileInfo.FullName, outText)
 
-    let parser = ArgumentParser.Create<CLIArguments>(programName =  (System.Reflection.Assembly.GetExecutingAssembly().GetName().Name)) 
-    let results = parser.Parse argv
-    let inputFilePath = results.GetResult Input1
-    let outputFilePath = results.GetResult OutDir1
-    processFile(inputFilePath, outputFilePath)
+    [<EntryPoint>]
+    let main argv = 
+        printfn "%A" argv
 
-    0
+        let parser = ArgumentParser.Create<CLIArguments>(programName =  (System.Reflection.Assembly.GetExecutingAssembly().GetName().Name)) 
+        let results = parser.Parse argv
+        let inputFilePath = results.GetResult InstrumentOutput
+        let outputFilePath = results.GetResult OutputDirectory
+        processFile(inputFilePath, outputFilePath)
+
+        0
