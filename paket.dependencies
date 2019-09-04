@@ -11,6 +11,7 @@ nuget Expecto.FsCheck
 nuget Expecto.VisualStudio.TestAdapter version_in_path: true
 nuget Newtonsoft.Json
 nuget Logary ~> 5.0.0-rc.10
+nuget FSharp.Plotly
 
 git https://github.com/CSBiology/FSharpAux.git nuget Packages: /
 
@@ -28,7 +29,16 @@ nuget BioFSharp.IO
 
 git https://github.com/CSBiology/BioFSharp.Mz.git nuget Packages: /
 
-nuget BioFSharp.Mz
+nuget BioFSharp.Mz 
+
+git https://github.com/CSBiology/MzLite.git nuget Packages: /
+
+nuget MzLite 
+nuget MzLite.Processing
+nuget MzLite.SQL 
+nuget MzLite.Bruker 
+nuget MzLite.Thermo
+nuget MzLite.Wiff
 
 clitool dotnet-fake
 
